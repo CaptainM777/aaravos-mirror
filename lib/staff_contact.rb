@@ -8,7 +8,8 @@ module StaffContact
   extend Discordrb::Commands::CommandContainer
   include ServerSettings
 
-  server = BOT.server(SERVER_ID)
+  SERVER = BOT.server(SERVER_ID)
+  here_ping = "@here"
   active_prompts = []
 
   def self.user_enable_read_perms(user)
@@ -19,6 +20,28 @@ module StaffContact
     allow = Discordrb::Permissions.new [:read_messages]
     deny = Discordrb::Permissions.new [:manage_channels]
     Discordrb::Overwrite.new(mod_role, allow: allow, deny: deny)
+  end
+
+  def self.create_contact_channel(user, chat_type)
+    channel_name = chat_type == :staff ? "chat-#{user.distinct}" : "chat-admin-#{user.distinct}"
+    mod_category = SERVER.categories.find{ |category| category.id == MOD_CATEGORY_ID }
+
+    user_enable_read_perms_overwrite = user_enable_read_perms(user)
+    mod_overwrite = create_mod_overwrite(SERVER.role(MOD_ROLE_ID))
+    contact_channel_overwrites = [
+      user_enable_read_perms_overwrite,
+      Discordrb::Overwrite.new(SERVER.everyone_role, deny: Discordrb::Permissions.new([:read_messages]))
+    ]
+    contact_channel_overwrites << mod_overwrite if chat_type == :staff
+
+    contact_channel = SERVER.create_channel(
+      channel_name,
+      topic: "Chat with #{user.mention}",
+      parent: MOD_CATEGORY_ID,
+      permission_overwrites: contact_channel_overwrites
+    )
+
+    return contact_channel
   end
 
   message do |event|
@@ -59,26 +82,9 @@ module StaffContact
       active_prompts.delete(event.user.id)
       next
     end
-  
-    channel_name = user_response == :staff ? "chat-#{event.user.distinct}" : "chat-admin-#{event.user.distinct}"
-    mod_category = server.categories.find{ |category| category.id == MOD_CATEGORY_ID }
 
-    user_enable_read_perms_overwrite = user_enable_read_perms(event.user)
-    mod_overwrite = create_mod_overwrite(server.role(MOD_ROLE_ID))
-    contact_channel_overwrites = [
-      user_enable_read_perms_overwrite,
-      Discordrb::Overwrite.new(server.everyone_role, deny: Discordrb::Permissions.new([:read_messages]))
-    ]
-    contact_channel_overwrites << mod_overwrite if user_response == :staff
-
-    contact_channel = server.create_channel(
-      channel_name,
-      topic: "Chat with #{event.user.mention}",
-      parent: MOD_CATEGORY_ID,
-      permission_overwrites: contact_channel_overwrites
-    )
-
-    first_message = contact_channel.send("@ here **#{event.author.mention} would to speak with the #{user_response.to_s}.**")
+    contact_channel = create_contact_channel(event.user, user_response)
+    first_message = contact_channel.send("#{here_ping} **#{event.author.mention} would to speak with the #{user_response.to_s}.**")
     chat_channel = ChatChannel.create(
       id: contact_channel.id, 
       creation_time: Time.now, 
@@ -86,8 +92,32 @@ module StaffContact
     )
     chat_channel.chat_user = ChatUser.create(id: event.user.id, distinct: event.user.distinct)
     event.respond "**A private channel has been created on the server for you and the #{user_response.to_s}:** #{first_message.jump_url}"
-    
+
     active_prompts.delete(event.user.id)
+  end
+
+  command :newchat, allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID] do |event, *args|
+    break if args.empty?
+    user = BOT.get_member(args[0])
+    break if user.nil? || ChatUser[user.id]
+    
+    chat_type = nil
+    if ["admins", "admin"].include?(args[1]&.downcase) && event.user.role?(ADMIN_ROLE_ID)
+      chat_type = :admins
+    else
+      chat_type = :staff
+    end
+
+    contact_channel = create_contact_channel(user, chat_type)
+    event.respond "**A chat channel has been created for #{user.distinct}.**"
+    contact_channel.send("**#{user.mention} the #{chat_type.to_s} would like to speak with you.**")
+    chat_channel = ChatChannel.create(
+      id: contact_channel.id,
+      creation_time: Time.now,
+      admin?: chat_type == :staff ? false : true
+    )
+    chat_channel.chat_user = ChatUser.create(id: user.id, distinct: user.distinct)
+    nil
   end
 
   channel_delete do |event|
@@ -108,14 +138,16 @@ module StaffContact
 
   command :end, allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID] do |event|
     break if !(chat_channel = ChatChannel[event.channel.id]) || event.server.nil?
+    break if chat_channel.admin? && event.user.role?(MOD_ROLE_ID)
     channel_history = event.channel.full_history
-    # Removes the initial "@here @user would like to speak to the staff/admins." message
+    # Removes the initial message that either pings @here or just pings the user
     channel_history.shift
     channel_history.reject!{ |message| message.content.start_with?("?end") }
 
     chat_user = BOT.user(chat_channel.chat_user.id)
     file_name = "log-#{SecureRandom.uuid}.txt"
-    File.open("./logs/#{file_name}", "w") do |file|
+    file_path = "./logs/#{chat_channel.admin? ? "admins" : "staff"}/#{file_name}"
+    File.open(file_path, "w") do |file|
       file.write(
         "Log of chat with #{chat_user.distinct} (#{chat_user.id}).\n" +
         "Chat started: #{chat_channel.creation_time.strftime('%Y-%m-%d %H:%M:%S +0000')}\n" +
@@ -136,7 +168,7 @@ module StaffContact
 
     log_channel = BOT.channel(chat_channel.admin? ? CHAT_LOG_ADMINS_CHANNEL_ID : CHAT_LOG_CHANNEL_ID)
     caption = "**Log of chat with user `#{chat_user.distinct}`**"
-    log_channel.send_file(File.open("./logs/#{file_name}"), caption: caption)
+    log_channel.send_file(File.open(file_path), caption: caption)
 
     begin
       chat_user.dm("**Your chat has been ended by a staff member. Send another message here to talk to the entire staff or the admins again.**")
@@ -153,5 +185,23 @@ module StaffContact
     sleep 5
     event.channel.delete
     nil
+  end
+
+  # Commands for my use only
+
+  command :togglehereping, aliases: [:togglehere] do |event|
+    break if event.user.id != CAP_ID
+    if here_ping == "@here"
+      here_ping = "@ here"
+      event << "**'here' pings have been turned off.**"
+    else
+      here_ping = "@here"
+      event << "**'here' pings have been turned on.**"
+    end
+  end
+
+  command :showherepingsetting, aliases: [:showheresetting, :showhere] do |event|
+    break if event.user.id != CAP_ID
+    here_ping == "@here" ? event << "**'here' pings are enabled.**" : event << "**'here' pings are disabled.**"
   end
 end

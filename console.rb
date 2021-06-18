@@ -28,7 +28,7 @@ module TableShortcuts
   alias :sc :shortcuts
 end
 
-puts "The database can be accessed using 'DB', the 'active_chats' table can be accessed using 'CHAT_SESSIONS', and models can be accessed using their name. " +
+puts "The database can be accessed using 'DB', and models can be accessed using their name. " +
 "Use 'shortcuts' or 'sc' to see the list of shortcut commands that can be used."
 include TableShortcuts
 

@@ -116,7 +116,6 @@ module BanAppeals
 
   message_edit do |event|
     next if !BanAppealMessage[event.message.id]
-    
   end
 
   channel_delete do |event|

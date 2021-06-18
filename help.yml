@@ -1,0 +1,29 @@
+master-list-description: >
+  Use `?help <command>` for more information on a command. When using `?help <command>`, the `<command>`
+  argument should be the *full* command name; command aliases are not accepted.
+
+
+  If an argument is surrounded with angle brackets (< >), then it is required. If an argument is surrounded 
+  with square brackets ([ ]), then it is optional.
+
+specific-command-footer: "Use ?help to get a full list of commands."
+
+staff-contact:
+  end:
+    overview: "•`?end` - Ends a chat session."
+    arguments: None
+    description: >
+      Ends a chat session and logs it to the appropriate channel, depending on whether it's visible
+      by the entire staff or just the admins.
+
+  newchat:
+    overview: "•`?newchat <user> [the word 'admins' or 'admin']` - Creates a chat session with a user."
+    arguments: >
+      `<user>` - Can be either a user ID or user mention.
+
+      `[the word 'admins' or 'admin']` - An optional argument that makes the new chat session admin-only. Only usable
+      by an admin; if it's used by a non-admin, it will create a regular chat session accessible by all staff.
+    description: >
+      Creates a chat session with a user. 
+      
+      Ex: `?newchat 260600155630338048`, `?newchat 421111966975918080 admins` 

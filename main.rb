@@ -1,5 +1,6 @@
 # main.rb - The 'main' file of this directory. This file does not contain any logic related to the operation of the staff
-# contact feature. All operations related to setting up the Discord bot and running it, however, are contained here.
+# contact feature. All operations related to creating the database tables and setting up the Discord bot and running it, 
+# however, are contained here.
 require 'sequel'
 require 'discordrb'
 
@@ -18,17 +19,6 @@ DB.create_table?(:chat_users) do
   Integer :id, primary_key: true
   String :distinct
   foreign_key :chat_channel_id, :chat_channels
-end
-
-DB.create_table?(:ban_appeals) do
-  Integer :user_id, primary_key: true
-  Integer :staff_channel_id
-  Integer :dm_channel_id
-end
-
-DB.create_table?(:ban_appeal_messages) do
-  Integer :id, primary_key: true
-  String :content
 end
 
 # Opens IRB with access to 'DB' and 'CHAT_SESSIONS' if a '-c' option was provided
@@ -51,7 +41,9 @@ BOT = Discordrb::Commands::CommandBot.new(CONFIG_SETTINGS)
 # Includes all command and event handlers from the 'StaffContact' module in the CommandBot instance
 Dir['./lib/*.rb'].each{ |file| load file }
 BOT.include! StaffContact
-BOT.include! BanAppeals
+BOT.include! Help
+# Ban appeals are still a work in progress
+# BOT.include! BanAppeals
 
 puts "Bot started!"
 BOT.run
