@@ -1,2 +1,4 @@
 data.db
 config.rb
+logs/staff/*
+logs/admins/*
