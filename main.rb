@@ -45,5 +45,9 @@ BOT.include! Help
 # Ban appeals are still a work in progress
 # BOT.include! BanAppeals
 
-BOT.ready{ puts "Bot started!" }
+BOT.ready do 
+  BOT.game = "DM me to contact staff"
+  puts "Bot started!"
+end
+
 BOT.run
