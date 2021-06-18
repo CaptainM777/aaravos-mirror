@@ -21,6 +21,12 @@ DB.create_table?(:chat_users) do
   foreign_key :chat_channel_id, :chat_channels
 end
 
+DB.create_table?(:ban_appeals) do 
+end
+
+DB.create_table?(:ban_appeal_messages) do 
+end
+
 # Opens IRB with access to 'DB' and 'CHAT_SESSIONS' if a '-c' option was provided
 if(ARGV[0] == '-c')
   ARGV.clear
