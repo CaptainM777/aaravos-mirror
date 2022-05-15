@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: 79b717099cf7ad2746be757e3a6a4bb32886ee4b
+  revision: e384e4a68e93981b3394844614e27972f22ba706
   branch: main
   specs:
     discordrb (3.4.2)
@@ -21,16 +21,16 @@ GEM
     et-orbi (1.2.6)
       tzinfo
     event_emitter (0.2.6)
-    ffi (1.15.4)
+    ffi (1.15.5)
     fugit (1.5.2)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
-    mime-types (3.3.1)
+    mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0901)
+    mime-types-data (3.2022.0105)
     netrc (0.11.0)
     opus-ruby (1.0.1)
       ffi
@@ -48,9 +48,9 @@ GEM
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.8)
+    unf_ext (0.0.8.1)
     websocket (1.2.9)
-    websocket-client-simple (0.3.0)
+    websocket-client-simple (0.3.1)
       event_emitter
       websocket
 
