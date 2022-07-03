@@ -1,3 +1,5 @@
+# ban_appeal_logger.rb - Handles all operations relating to the logging of ban appeals to text files.
+
 module BanAppeals
   class BanAppealLogger
     def initialize(appeal, staff_member_logging, appeal_outcome)
