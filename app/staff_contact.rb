@@ -1,7 +1,5 @@
 # staffcontact.rb - Contains all the logic related to the operation of the staff contact feature.
-require_relative '../extensions.rb'
 require 'securerandom'
-Dir["./models/*.rb"].each{ |file| require file }
 
 module StaffContact
   extend Discordrb::EventContainer
