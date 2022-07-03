@@ -1,3 +1,6 @@
+# image_archiver.rb - Handles the logging of images to text files. An imgur link is created from an image's CDN
+# url and used in the log. In cases where imgur is unavailable, the image is posted to a private channel on another
+# server and another CDN url is generated.
 require "uri"
 require "net/http"
 require "json"
