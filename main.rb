@@ -1,6 +1,6 @@
-# main.rb - The 'main' file of this directory. This file does not contain any logic related to the operation of the staff
-# contact feature. All operations related to creating the database tables and setting up the Discord bot and running it, 
-# however, are contained here.
+# main.rb - The 'main' file of this project. Files from the app/models/, lib/, and app/ directories are 'required' 
+# here, with app/ files being loaded into the bot. Server settings are loaded here as well allowing me to work on
+# my personal server or the Dragon Prince server.
 require 'discordrb'
 require_relative 'db/db_init'
 require_relative 'config.rb'
