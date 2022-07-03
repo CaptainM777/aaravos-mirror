@@ -250,7 +250,9 @@ module BanAppeals
     end
   end
 
-  command :accept, allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID], min_args: 1 do |event, channel_id|
+  command :accept, 
+          allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID, BOT_MANAGER_ROLE_ID], 
+          min_args: 1 do |event, channel_id|
     break if !(appeal = Appeal[staff_channel_id: channel_id.to_i])
 
     ban_appeal_logger = BanAppealLogger.new(appeal, event.user, :accepted)
@@ -275,7 +277,9 @@ module BanAppeals
     event.respond "The appeal for **#{appeal_sender.distinct}** (#{appeal_sender.mention}) has been approved."
   end
 
-  command :reject, allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID], min_args: 1 do |event, channel_id|
+  command :reject, 
+          allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID, BOT_MANAGER_ROLE_ID], 
+          min_args: 1 do |event, channel_id|
     break if !(appeal = Appeal[staff_channel_id: channel_id.to_i])
 
     ban_appeal_logger = BanAppealLogger.new(appeal, event.user, :rejected)
