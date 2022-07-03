@@ -1,4 +1,4 @@
-# staffcontact.rb - Contains all the logic related to the operation of the staff contact feature.
+# staff_contact.rb - Allows users to contact the staff or admins through a private channel created by the bot.
 require 'securerandom'
 
 module StaffContact
