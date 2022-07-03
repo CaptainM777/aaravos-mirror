@@ -1,4 +1,4 @@
-# ban_appeal.rb - 
+# ban_appeal.rb - Allows users to appeal their ban and speak with the staff through the bot.
 require 'securerandom'
 
 module BanAppeals
