@@ -251,7 +251,7 @@ module BanAppeals
   end
 
   command :accept, allowed_roles: ALLOWED_ROLES, min_args: 1 do |event, channel_id|
-    break if !(appeal = Appeal[staff_channel_id: channel_id.to_i])
+    break if event.server.nil? || !(appeal = Appeal[staff_channel_id: channel_id.to_i])
 
     ban_appeal_logger = BanAppealLogger.new(appeal, event.user, :accepted)
     ban_appeal_logger.log_ban_appeal
@@ -282,7 +282,7 @@ module BanAppeals
   end
 
   command :reject, allowed_roles: ALLOWED_ROLES, min_args: 1 do |event, channel_id|
-    break if !(appeal = Appeal[staff_channel_id: channel_id.to_i])
+    break if event.server.nil? || !(appeal = Appeal[staff_channel_id: channel_id.to_i])
 
     ban_appeal_logger = BanAppealLogger.new(appeal, event.user, :rejected)
     ban_appeal_logger.log_ban_appeal

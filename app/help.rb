@@ -14,6 +14,8 @@ module Help
   HELP_COMMAND.delete("specific-command-footer")
 
   command :help, allowed_roles: ALLOWED_ROLES do |event, *args|
+    break if event.server.nil? 
+    
     type = args.join(" ").empty? ? "master" : args.join(" ")
 
     if type == "master"
