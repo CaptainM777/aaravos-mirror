@@ -76,7 +76,7 @@ class Models::BanAppeals::Message < Sequel::Model
   end
 
   def before_destroy
-    attachments.each{ |attachment| a.destroy }
+    attachments.each{ |attachment| attachment.destroy }
     message_edits.each{ |edit| edit.destroy }
     super
   end
