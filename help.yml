@@ -26,4 +26,20 @@ staff-contact:
     description: >
       Creates a chat session with a user. 
       
-      Ex: `?newchat 260600155630338048`, `?newchat 421111966975918080 admins` 
+      Ex: `?newchat 260600155630338048`, `?newchat 421111966975918080 admins`
+
+ban-appeals:
+  accept:
+    overview: "•`?accept <channel ID>` - Accepts a ban appeal."
+    arguments: "`<channel ID>` - The ID of the ban appeal channel."
+    description: >
+      Accepts a ban appeal. When this happens, the user is unbanned from the server and sent an invite.
+
+      Ex: `?accept 841490293890351134`
+  reject: 
+    overview: "•`?reject <channel ID>` - Rejects a ban appeal."
+    arguments: "`<channel ID>` - The ID of the ban appeal channel."
+    description: >
+      Rejects an ban appeal. When this happens, the user is banned from the ban appeal server.
+
+      Ex: `?reject 841490293890351134`
