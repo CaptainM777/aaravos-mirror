@@ -11,6 +11,7 @@ module ServerSettings
   # Sets all server, channel and role ID's in the 'server' and 'ban appeal server' hashes as constants of this module
   CONFIG_SETTINGS[:server].each{ |id_name, id| self.const_set(id_name.upcase, id) }
   CONFIG_SETTINGS[:ban_appeal_server].each{ |id_name, id| self.const_set(id_name.upcase, id) }
+  ALLOWED_ROLES = [MOD_ROLE_ID, ADMIN_ROLE_ID, BOT_MANAGER_ROLE_ID]
 end
 
 Models = Module.new

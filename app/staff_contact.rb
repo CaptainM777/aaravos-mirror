@@ -94,7 +94,7 @@ module StaffContact
     active_prompts.delete(event.user.id)
   end
 
-  command :newchat, allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID] do |event, *args|
+  command :newchat, allowed_roles: ALLOWED_ROLES do |event, *args|
     break if args.empty?
     user = BOT.get_member(args[0])
     break if user.nil? || ChatUser[user.id]
@@ -134,7 +134,7 @@ module StaffContact
     end
   end
 
-  command :end, allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID] do |event|
+  command :end, allowed_roles: ALLOWED_ROLES do |event|
     break if !(chat_channel = ChatChannel[event.channel.id]) || event.server.nil?
     break if chat_channel.admin? && event.user.role?(MOD_ROLE_ID)
     channel_history = event.channel.full_history

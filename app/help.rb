@@ -13,7 +13,7 @@ module Help
   HELP_COMMAND.delete("master-list-description")
   HELP_COMMAND.delete("specific-command-footer")
 
-  command :help, allowed_roles: [MOD_ROLE_ID, ADMIN_ROLE_ID] do |event, *args|
+  command :help, allowed_roles: ALLOWED_ROLES do |event, *args|
     type = args.join(" ").empty? ? "master" : args.join(" ")
 
     if type == "master"
