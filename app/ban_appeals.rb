@@ -269,7 +269,13 @@ module BanAppeals
       event.server.unban(appeal_sender, "Ban appeal accepted")
     rescue Discordrb::Errors::UnknownError
     end
-    appeal_sender.dm("Your ban appeal has been accepted. Server invite: #{invite.url}")
+
+    begin
+      appeal_sender.dm("Your ban appeal has been accepted. Server invite: #{invite.url}")
+    rescue Discordrb::Errors::NoPermissions
+      BOT.user(CAP_ID).dm "The appeal for #{appeal_sender.distinct} (#{appeal_sender.id}) has been approved, " +
+      "but their DM's are closed. Please contact them."
+    end
 
     appeal.destroy
     BOT.channel(channel_id).delete
@@ -286,7 +292,14 @@ module BanAppeals
     ban_appeal_logger.log_ban_appeal
 
     appeal_sender = BOT.user(appeal.user_id)
-    appeal_sender.dm("Your ban appeal has been rejected. You have been banned from the ban appeal server.")
+
+    begin
+      appeal_sender.dm("Your ban appeal has been rejected. You have been banned from the ban appeal server.")
+    rescue Discordrb::Errors::NoPermissions
+      BOT.user(CAP_ID).dm "The appeal for #{appeal_sender.distinct} (#{appeal_sender.id}) has been rejected, " +
+      "but their DM's are closed. Please contact them."
+    end
+
     BOT.server(BAN_APPEAL_SERVER_ID).ban(appeal_sender, 0, reason: "Ban appeal rejected")
 
     appeal.destroy
