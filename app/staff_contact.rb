@@ -7,7 +7,6 @@ module StaffContact
   include ServerSettings
 
   SERVER = BOT.server(SERVER_ID)
-  here_ping = "@here"
   active_prompts = []
 
   def self.user_enable_read_perms(user)
@@ -82,7 +81,7 @@ module StaffContact
     end
 
     contact_channel = create_contact_channel(event.user, user_response)
-    first_message = contact_channel.send("#{here_ping} **#{event.author.mention} would to speak with the #{user_response.to_s}.**")
+    first_message = contact_channel.send("**#{event.author.mention} would to speak with the #{user_response.to_s}.**")
     chat_channel = ChatChannel.create(
       id: contact_channel.id, 
       creation_time: Time.now, 
@@ -185,23 +184,5 @@ module StaffContact
     sleep 5
     event.channel.delete
     nil
-  end
-
-  # Commands for my use only
-
-  command :togglehereping, aliases: [:togglehere] do |event|
-    break if event.user.id != CAP_ID
-    if here_ping == "@here"
-      here_ping = "@ here"
-      event << "**'here' pings have been turned off.**"
-    else
-      here_ping = "@here"
-      event << "**'here' pings have been turned on.**"
-    end
-  end
-
-  command :showherepingsetting, aliases: [:showheresetting, :showhere] do |event|
-    break if event.user.id != CAP_ID
-    here_ping == "@here" ? event << "**'here' pings are enabled.**" : event << "**'here' pings are disabled.**"
   end
 end
