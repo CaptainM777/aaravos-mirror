@@ -145,6 +145,8 @@ module StaffContact
     chat_user = BOT.user(chat_channel.chat_user.id)
     file_name = "log-#{SecureRandom.uuid}.txt"
     file_path = "./logs/#{chat_channel.admin? ? "admins" : "staff"}/#{file_name}"
+    url = "http://#{ENV['IP_ADDRESS']}:#{ENV['PORT']}/#{file_path.delete_prefix("./logs/")}"
+
     File.open(file_path, "w") do |file|
       file.write(
         "Log of chat with #{chat_user.distinct} (#{chat_user.id}).\n" +
@@ -165,7 +167,7 @@ module StaffContact
     end
 
     log_channel = BOT.channel(chat_channel.admin? ? CHAT_LOG_ADMINS_CHANNEL_ID : CHAT_LOG_CHANNEL_ID)
-    caption = "**Log of chat with user `#{chat_user.distinct}`**"
+    caption = "**Log of chat with user `#{chat_user.distinct}`**\n**View:** #{url}"
     log_channel.send_file(File.open(file_path), caption: caption)
 
     begin
