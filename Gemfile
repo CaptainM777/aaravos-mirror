@@ -4,3 +4,4 @@ gem 'discordrb', github: 'shardlab/discordrb', branch: 'main' # Discordrb librar
 gem 'sqlite3' # Database library
 gem 'sequel' # Database tools
 gem 'rufus-scheduler'
+gem 'webrick'
