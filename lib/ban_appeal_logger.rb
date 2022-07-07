@@ -39,12 +39,12 @@ module BanAppeals
 
       file_name = "ban-appeal-#{SecureRandom.uuid}.txt"
       file_path = "./logs/ban_appeals/#{file_name}"
-      url = "http://#{ENV['IP_ADDRESS']}:#{ENV['PORT']}/#{file_path.delete_prefix("./logs/")}"
+      # url = "http://#{ENV['IP_ADDRESS']}:#{ENV['PORT']}/#{file_path.delete_prefix("./logs/")}"
   
       File.open(file_path, "w"){ |file| file.write(@full_log) }
 
       log_channel = BOT.channel(ServerSettings::MIRROR_BAN_APPEAL_LOG_CHANNEL_ID)
-      caption = "**Log of ban appeal for user `#{@banned_user.distinct}`**\n**View:** #{url}"
+      caption = "**Log of ban appeal for user `#{@banned_user.distinct}`**" #\n**View:** #{url}"
       log_channel.send_file(File.open(file_path), caption: caption)
     end
   end
