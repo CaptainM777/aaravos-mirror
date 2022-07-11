@@ -43,10 +43,10 @@ module StaffContact
 
   message do |event|
     # Skips if the message was sent on the server, the user has an active prompt open, the user is the bot,
-    # the user already has an open chat with the staff, or the user sent in a ban appeal.
+    # the user already has an open chat with the staff, or if the user isn't on the server.
     next if !event.server.nil? || active_prompts.include?(event.user.id) ||
              event.user.id == BOT.profile.id || ChatUser[event.user.id] ||
-             BOT.get_ban(event.user.id)
+             !BOT.member(SERVER_ID, event.user.id)
     active_prompts << event.user.id
 
     prompt = event.respond "Who would you like to contact? Respond with the number that corresponds to the option you want: " +
