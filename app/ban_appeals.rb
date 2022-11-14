@@ -270,7 +270,7 @@ module BanAppeals
 
     begin
       appeal_sender.dm("Your ban appeal has been accepted. Server invite: #{invite.url}")
-    rescue Discordrb::Errors::NoPermissions
+    rescue Discordrb::Errors::NoPermission
       BOT.user(CAP_ID).dm "The appeal for #{appeal_sender.distinct} (#{appeal_sender.id}) has been approved, " +
       "but their DM's are closed. Please contact them."
     end
@@ -291,7 +291,7 @@ module BanAppeals
 
     begin
       appeal_sender.dm("Your ban appeal has been rejected. You have been banned from the ban appeal server.")
-    rescue Discordrb::Errors::NoPermissions
+    rescue Discordrb::Errors::NoPermission
       BOT.user(CAP_ID).dm "The appeal for #{appeal_sender.distinct} (#{appeal_sender.id}) has been rejected, " +
       "but their DM's are closed. Please contact them."
     end
