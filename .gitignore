@@ -4,4 +4,3 @@ logs/staff/*
 logs/admins/*
 logs/ban_appeals/*
 *.sh
-.ruby-version
