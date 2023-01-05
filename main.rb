@@ -2,6 +2,7 @@
 # here, with app/ files being loaded into the bot. Server settings are loaded here as well allowing me to work on
 # my personal server or the Dragon Prince server.
 require 'discordrb'
+require 'botoperations'
 require_relative 'db/db_init'
 require_relative 'config.rb'
 
@@ -33,6 +34,7 @@ Dir['./app/**/*.rb'].each{ |file| load file }
 BOT.include! StaffContact
 BOT.include! Help
 BOT.include! BanAppeals
+BOT.include! BotOperations
 
 BOT.ready do 
   BOT.game = "DM me to contact staff"
