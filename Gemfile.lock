@@ -1,6 +1,12 @@
 GIT
+  remote: https://github.com/CaptainM777/ruby-bot-operations.git
+  revision: 936079c48667ed2b8c6988f3d9b61dc75bf3a5ba
+  specs:
+    botoperations (0.1.0)
+
+GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: aa134aa5d8dcd232e48ce494ce197a00f8f83adb
+  revision: ad5dd1641f3653ca4e76d44f901adb42018e354e
   branch: main
   specs:
     discordrb (3.4.2)
@@ -22,7 +28,7 @@ GEM
       tzinfo
     event_emitter (0.2.6)
     ffi (1.15.5)
-    fugit (1.5.3)
+    fugit (1.8.0)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     http-accept (1.7.0)
@@ -31,6 +37,7 @@ GEM
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
+    mini_portile2 (2.8.1)
     netrc (0.11.0)
     opus-ruby (1.0.1)
       ffi
@@ -40,18 +47,19 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rufus-scheduler (3.8.1)
+    rufus-scheduler (3.8.2)
       fugit (~> 1.1, >= 1.1.6)
-    sequel (5.58.0)
-    sqlite3 (1.4.4)
-    tzinfo (2.0.4)
+    sequel (5.64.0)
+    sqlite3 (1.5.4)
+      mini_portile2 (~> 2.8.0)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
     webrick (1.7.0)
     websocket (1.2.9)
-    websocket-client-simple (0.3.1)
+    websocket-client-simple (0.6.0)
       event_emitter
       websocket
 
@@ -59,6 +67,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  botoperations (~> 0.1.0)!
   discordrb!
   rufus-scheduler
   sequel
@@ -66,4 +75,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.1.4
+   2.3.19

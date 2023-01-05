@@ -5,3 +5,4 @@ gem 'sqlite3' # Database library
 gem 'sequel' # Database tools
 gem 'rufus-scheduler'
 gem 'webrick'
+gem "botoperations", "~> 0.1.0", :github => "CaptainM777/ruby-bot-operations"
