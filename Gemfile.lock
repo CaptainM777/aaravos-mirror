@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CaptainM777/ruby-bot-operations.git
-  revision: cb540b83b5e5fca2c6411dfc831a49631806b6b1
+  revision: 33e6b29c261aa41b8b1fb6a24e510a45bc2d9a6c
   branch: main
   specs:
     botoperations (0.1.0)
